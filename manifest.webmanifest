@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "ピタオリ — 行き来する布を止めて織る",
+  "short_name": "ピタオリ",
+  "description": "左右に行き来する布の帯をタップで止めて、下の段に重ねて織り上げる。はみ出たぶんは切り落とされるので、ぴったり止めて細くしないのがこつ。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#efe8da",
+  "theme_color": "#efe8da",
+  "lang": "ja",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

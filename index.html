@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#efe8da">
+  <meta name="description" content="左右に行き来する布の帯をタップで止めて、下の段に重ねて織り上げる。はみ出たぶんは切り落とされるので、ぴったり止めて細くしないのがこつ。">
+  <title>ピタオリ — 行き来する布を止めて織る</title>
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ピタオリ">
+  <meta property="og:title" content="ピタオリ — 行き来する布を止めて織る">
+  <meta property="og:description" content="左右に行き来する布の帯をタップで止めて、下の段に重ねて織り上げる。はみ出たぶんは切り落とされるので、ぴったり止めて細くしないのがこつ。">
+  <meta property="og:url" content="https://t-of.github.io/pitaori/">
+  <meta property="og:image" content="https://t-of.github.io/pitaori/icons/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- apple-mobile-web-app-status-bar-style は付けない（black-translucent だと iOS 26 で上部が隠れる） -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ピタオリ">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="./webapp-kit/webapp-kit.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="bar">
+      <h1 class="bar__title">ピタオリ</h1>
+      <div class="bar__actions">
+        <button class="pill" data-wak="install" hidden>アプリにする</button>
+        <button class="pill" data-wak="share">共有</button>
+      </div>
+    </header>
+
+    <section class="stage" id="stage">
+      <!-- ここにゲーム本体 -->
+    </section>
+
+    <footer class="credit">
+      <a href="/">T.OF...</a> のアプリ
+    </footer>
+  </main>
+
+  <script src="./webapp-kit/webapp-kit.js"></script>
+  <script src="./main.js"></script>
+</body>
+</html>
