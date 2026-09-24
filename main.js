@@ -127,6 +127,7 @@ function resize() {
   canvas.height = Math.round(wh * dpr);
   scale = w / WORLD_W;
   H = wh / scale;
+  dodgeCard();
   render();
 }
 
@@ -149,6 +150,7 @@ function start() {
   overT = 0;
   pita = null;
   show('play');
+  canvas.style.transform = '';
   resize();
   cam = cameraTarget(game.rows.length, H);
   hud();
@@ -188,6 +190,21 @@ function finish() {
   $('rBest').textContent = `ベスト ${best.rows} 段（ぴったり ${best.perfect} 回）`;
   lockUntil = performance.now() + RESULT_LOCK * 1000;
   show('result');
+  dodgeCard();
+}
+
+// 横画面ではカードが右に出る。ステージの右端にかかるときは、かからない所までステージを左へずらす
+function dodgeCard() {
+  let dx = 0;
+  if (screen === 'result') {
+    const card = document.querySelector('.result__card').getBoundingClientRect();
+    // ずらす前の位置（getBoundingClientRect は動いている途中の transform を含むので使わない）
+    const left = $('play').getBoundingClientRect().left + canvas.offsetLeft;
+    const right = left + canvas.offsetWidth;
+    // カードが下にあるときは resultCam で布を上げる
+    if (card.left > (left + right) / 2) dx = Math.max(0, Math.min(right + 12 - card.left, left));
+  }
+  canvas.style.transform = dx ? `translateX(${-dx}px)` : '';
 }
 
 // 結果のカードが下に重なるときは、織った布のいちばん上がカードの上に見えるところまで上げる
@@ -195,7 +212,7 @@ function resultCam() {
   const target = cameraTarget(game.rows.length, H);
   const card = document.querySelector('.result__card').getBoundingClientRect();
   const stage = canvas.getBoundingClientRect();
-  if (card.left > stage.left + stage.width / 2) return target;   // 横画面ではカードは右にあり、布にかからない
+  if (card.left > stage.left + stage.width / 2) return target;   // 横画面ではカードは右にあり、dodgeCard でよける
   return Math.max(target, rowTop(game.rows.length - 1) - ((card.top - stage.top) / scale - 24));
 }
 

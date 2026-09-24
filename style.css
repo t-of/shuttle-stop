@@ -136,7 +136,7 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
   justify-content: center;
   overflow: hidden;
 }
-.stage canvas { display: block; }
+.stage canvas { display: block; transition: transform 0.3s ease-out; }
 
 /* ---- 結果（ステージの上に下寄せで重ね、後ろの布が見える） ---- */
 .result {
@@ -206,6 +206,7 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
     left: 0;
     text-align: left;
     pointer-events: none;
+    z-index: 1;   /* 結果でステージを左へずらしても、段数が布の下に隠れないように */
   }
   .hud__rows b { font-size: 36px; }
   .result {
@@ -221,4 +222,5 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
 
 @media (prefers-reduced-motion: reduce) {
   .result__card { animation: none; }
+  .stage canvas { transition: none; }
 }

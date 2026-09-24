@@ -139,11 +139,15 @@ test('画面の追いかけ: 始めは土台の上面が 70%、動く帯の上�
   near(L.follow(0, 100, 0.1), 100 * (1 - Math.exp(-1.2)), 'なめらかに');
 });
 
-test('色: 前の段と同じ色にならない', () => {
-  let prev = { c: 4 };
+test('色: 普通の段は土台の色を使わず、前の段と同じ色にならない', () => {
+  assert.equal(L.newGame().rows[0].style.c, L.BASE_COLOR);
+  const onBase = new Set();
+  for (let i = 0; i < 200; i++) onBase.add(L.pickStyle({ c: L.BASE_COLOR }).c);
+  assert.deepEqual([...onBase].sort(), [0, 1, 2, 3], '土台の上は 4 色すべて出る');
+  let prev = { c: L.BASE_COLOR };
   for (let i = 0; i < 500; i++) {
     const s = L.pickStyle(prev);
-    assert.ok(s.c >= 0 && s.c < L.COLOR_COUNT && s.c !== prev.c);
+    assert.ok(s.c >= 0 && s.c < L.COLOR_COUNT && s.c !== L.BASE_COLOR && s.c !== prev.c, `c=${s.c}`);
     assert.ok(L.PATTERNS.includes(s.p));
     prev = s;
   }
@@ -181,7 +185,7 @@ test('記録: pitaori.best に { v: 1, rows, perfect }、上回ったときだ�
 });
 
 test('共有の文', () => {
-  assert.equal(L.shareText(12, 3), 'ピタオリで 12 段おった（ぴったり 3 回）');
+  assert.equal(L.shareText(12, 3), 'ピタオリで 12 段織った（ぴったり 3 回）');
 });
 
 console.log(`\n${n} 件すべて通った`);

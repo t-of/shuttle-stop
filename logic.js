@@ -24,7 +24,8 @@ export const CAM_TOP = 0.35;          // 動く帯の上端はステージの高
 export const CAM_RATE = 12;           // 追いかけ: 1 秒あたり 1 − exp(−12 × 経過秒)
 
 // 布の色と柄（色の値は main.js。ここでは番号だけ）
-export const COLOR_COUNT = 5;
+export const COLOR_COUNT = 4;          // 普通の段に使う色（0〜3）
+export const BASE_COLOR = 4;           // 土台だけの色（生成りの濃い色）。普通の段には使わない
 export const PATTERNS = ['plain', 'stripe', 'check', 'dot'];
 
 // 縦の座標は下が +。段 i の上端は y = −i × ROW_H（土台の上面が y = 0）
@@ -36,14 +37,15 @@ export function speed(k) {
 
 // 前の段と同じ色にはしない（1 段ごとに色がずれていく帯にしないため、順番ではなくランダム）
 export function pickStyle(prev, rand = Math.random) {
-  let c = Math.floor(rand() * (COLOR_COUNT - 1));
-  if (prev && c >= prev.c) c++;
+  const same = prev && prev.c < COLOR_COUNT;   // 土台の上ならどの色でもよい
+  let c = Math.floor(rand() * (same ? COLOR_COUNT - 1 : COLOR_COUNT));
+  if (same && c >= prev.c) c++;
   return { c, p: PATTERNS[Math.floor(rand() * PATTERNS.length)] };
 }
 
 export function newGame(rand = Math.random) {
   const g = {
-    rows: [{ x: (WORLD_W - BASE_W) / 2, w: BASE_W, px: (WORLD_W - BASE_W) / 2, style: { c: 4, p: 'plain' } }],
+    rows: [{ x: (WORLD_W - BASE_W) / 2, w: BASE_W, px: (WORLD_W - BASE_W) / 2, style: { c: BASE_COLOR, p: 'plain' } }],
     perfect: 0,
     bits: [],       // 落ちていく切れ端（見た目だけ）
     mover: null,
@@ -128,7 +130,7 @@ export function follow(cam, target, dt, instant = false) {
   return instant ? target : cam + (target - cam) * (1 - Math.exp(-CAM_RATE * dt));
 }
 
-export const shareText = (rows, perfect) => `ピタオリで ${rows} 段おった（ぴったり ${perfect} 回）`;
+export const shareText = (rows, perfect) => `ピタオリで ${rows} 段織った（ぴったり ${perfect} 回）`;
 
 // ---- 記録（localStorage はほかのアプリと共有されるので、キーは 'pitaori.' で始める） ----
 export const BEST_KEY = 'pitaori.best';
