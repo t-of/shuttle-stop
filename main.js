@@ -15,6 +15,105 @@ const storage = (() => { try { return localStorage; } catch { return null; } })(
 let best = readBest(storage);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 
+// ---- 音（Web Audio で作る。音声ファイルは使わない） ----
+// iPhone のマナーモードでも鳴らす（Safari 16.4 以降）。
+// 'playback' にすると音楽アプリの曲が止まるので、アプリの音がオンのときだけにする。
+function setAudioSession(soundOn) {
+  try { if (navigator.audioSession) navigator.audioSession.type = soundOn ? 'playback' : 'auto'; } catch { /* 対応していない */ }
+}
+const SOUND_KEY = 'pitaori.sound';
+const sfx = {
+  on: (() => { try { return storage?.getItem(SOUND_KEY) !== '0'; } catch { return true; } })(),
+  ctx: null,
+  // 触ったときに呼ぶ（ブラウザは触る前の音を止める）
+  unlock() {
+    if (!this.on) return;
+    setAudioSession(true);
+    if (!this.ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      try { this.ctx = new AC(); } catch { return; }
+      this.out = this.ctx.createGain();
+      this.out.gain.value = 0.5;   // 全体を控えめに
+      this.out.connect(this.ctx.destination);
+      const len = this.ctx.sampleRate * 0.2;
+      this.noise = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+      const d = this.noise.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    }
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+  },
+  tone(freq, { at = 0, dur = 0.15, type = 'sine', gain = 0.12, to } = {}) {
+    if (!this.on || !this.ctx) return;
+    const t = this.ctx.currentTime + at;
+    const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(freq, t);
+    if (to) o.frequency.exponentialRampToValueAtTime(to, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(gain, t + 0.006);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(this.out);
+    o.start(t); o.stop(t + dur + 0.03);
+  },
+  // 布がこすれる「さっ」
+  rustle({ at = 0, dur = 0.08, freq = 1800, gain = 0.25 } = {}) {
+    if (!this.on || !this.ctx) return;
+    const t = this.ctx.currentTime + at;
+    const s = this.ctx.createBufferSource(), f = this.ctx.createBiquadFilter(), g = this.ctx.createGain();
+    s.buffer = this.noise;
+    f.type = 'bandpass'; f.frequency.value = freq; f.Q.value = 0.8;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(gain, t + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(f).connect(g).connect(this.out);
+    s.start(t); s.stop(t + dur + 0.03);
+  },
+  // 筬（おさ）で打ち込む「とん」。段が上がるほど少し高く
+  place(rows) {
+    this.rustle({ dur: 0.05, freq: 1400, gain: 0.18 });
+    this.tone(150 + Math.min(rows, 40) * 3, { dur: 0.12, gain: 0.22, to: 90 });
+  },
+  // 切り落とし「しゃっ」
+  cut() { this.rustle({ at: 0.02, dur: 0.12, freq: 4200, gain: 0.14 }); },
+  // ぴったり: 続けるほど音が上がる（ド レ ミ ソ ラ …）
+  perfect(streak) {
+    const scale = [0, 2, 4, 7, 9];
+    const n = streak - 1;
+    const f = 523.25 * 2 ** ((12 * Math.floor(n / 5) + scale[n % 5]) / 12);
+    this.tone(Math.min(f, 2100), { dur: 0.28, gain: 0.08 });
+    this.tone(Math.min(f, 2100) * 2, { at: 0.03, dur: 0.18, gain: 0.03 });
+  },
+  // 重ならず落ちた
+  miss() {
+    this.rustle({ dur: 0.18, freq: 900, gain: 0.16 });
+    this.tone(330, { dur: 0.35, type: 'triangle', gain: 0.08, to: 150 });
+  },
+  // 結果。ベストを更新したら上がる音
+  result(isNew) {
+    const notes = isNew ? [523.25, 659.25, 783.99, 1046.5] : [392, 329.63, 261.63];
+    notes.forEach((f, i) => this.tone(f, { at: i * 0.1, dur: 0.3, type: 'triangle', gain: 0.07 }));
+  },
+  button() { this.tone(880, { dur: 0.05, gain: 0.05 }); },
+};
+setAudioSession(sfx.on);
+// 最初の音はユーザーが触ったときに（捕まえる段で先に呼ぶ）
+addEventListener('pointerdown', () => sfx.unlock(), true);
+addEventListener('keydown', () => sfx.unlock(), true);
+
+function soundButton() {
+  $('sound').setAttribute('aria-pressed', String(sfx.on));
+  $('sound').textContent = sfx.on ? '音 オン' : '音 オフ';
+}
+$('sound').addEventListener('click', () => {
+  sfx.on = !sfx.on;
+  try { storage?.setItem(SOUND_KEY, sfx.on ? '1' : '0'); } catch { /* 保存できない環境 */ }
+  setAudioSession(sfx.on);
+  soundButton();
+  if (sfx.on) { sfx.unlock(); sfx.button(); }
+});
+soundButton();
+
 // ---- 見た目（平らな布。影や側面で厚みを出さない） ----
 const BG = '#efe8da';
 const WARP = '#d9d0bf';
@@ -136,6 +235,7 @@ let cam = 0;       // ステージの上端の y（世界の単位）
 let overT = 0;     // 終わってからの秒
 let pita = null;   // { i: 段, t: 経過秒 } ぴったりの光と文字
 let lockUntil = 0; // 結果のボタンを押せるようになる時刻
+let streak = 0;    // 続けてぴったりの回数（音の高さに使う）
 let raf = 0;
 let last = 0;
 
@@ -149,6 +249,7 @@ function start() {
   game = newGame();
   overT = 0;
   pita = null;
+  streak = 0;
   show('play');
   canvas.style.transform = '';
   resize();
@@ -174,6 +275,12 @@ function act() {
   if (!kind) return;
   hud();
   if (kind === 'perfect') pita = { i: game.rows.length - 1, t: 0 };
+  if (kind === 'miss') sfx.miss();
+  else {
+    sfx.place(woven(game));
+    if (kind === 'perfect') sfx.perfect(++streak);
+    else { streak = 0; sfx.cut(); }
+  }
   if (game.over) {
     overT = 0;
     const rows = woven(game);
@@ -189,6 +296,7 @@ function finish() {
   $('rPerfect').textContent = game.perfect;
   $('rBest').textContent = `ベスト ${best.rows} 段（ぴったり ${best.perfect} 回）`;
   lockUntil = performance.now() + RESULT_LOCK * 1000;
+  sfx.result(!$('rNew').hidden);
   show('result');
   dodgeCard();
 }
@@ -294,9 +402,9 @@ addEventListener('keydown', (e) => {
   else if (screen === 'play') act();
   else start();
 });
-$('start').addEventListener('click', start);
-$('again').addEventListener('click', start);
-$('toTitle').addEventListener('click', toTitle);
+$('start').addEventListener('click', () => { sfx.button(); start(); });
+$('again').addEventListener('click', () => { if (performance.now() >= lockUntil) sfx.button(); start(); });
+$('toTitle').addEventListener('click', () => { if (performance.now() >= lockUntil) sfx.button(); toTitle(); });
 $('shareResult').addEventListener('click', () => {
   if (performance.now() < lockUntil) return;
   WebAppKit.share({ text: shareText(woven(game), game.perfect) });
