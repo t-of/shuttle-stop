@@ -1,1 +1,112 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#efe8da"/><text x="256" y="256" dy=".35em" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="700" font-size="280" fill="#eceef3">ピ</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><clipPath id="c"><rect width="512" height="512" rx="112"/></clipPath><rect width="512" height="512" rx="112" fill="#efe8da"/><g clip-path="url(#c)">
+  <rect x="-65.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="-33.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="-1.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="30.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="62.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="94.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="126.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="158.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="190.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="222.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="254.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="286.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="318.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="350.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="382.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="414.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="446.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="478.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="510.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="542.5" y="-48" width="3" height="608" fill="#d9d0bf"/><rect x="574.5" y="-48" width="3" height="608" fill="#d9d0bf"/>
+  <defs>
+  <pattern id="b0shima" width="20" height="62" x="88" y="352" patternUnits="userSpaceOnUse">
+    <rect width="20" height="62" fill="#2d4a7a"/>
+    <rect y="16" width="20" height="5" fill="#efe8da"/>
+    <rect y="41" width="20" height="5" fill="#efe8da"/>
+  </pattern>
+  <pattern id="b0koushi" width="31" height="31" x="88" y="352" patternUnits="userSpaceOnUse">
+    <rect width="31" height="31" fill="#d6a53a"/>
+    <rect x="13" width="5" height="31" fill="#2a2622" opacity=".28"/>
+    <rect y="13" width="31" height="5" fill="#2a2622" opacity=".28"/>
+  </pattern>
+  <pattern id="b0ten" width="28" height="31" x="88" y="352" patternUnits="userSpaceOnUse">
+    <rect width="28" height="31" fill="#c8414b"/>
+    <circle cx="7" cy="15.5" r="4.5" fill="#efe8da"/>
+    <circle cx="21" cy="0" r="4.5" fill="#efe8da"/>
+    <circle cx="21" cy="31" r="4.5" fill="#efe8da"/>
+  </pattern>
+  <pattern id="b0take" width="20" height="62" x="88" y="352" patternUnits="userSpaceOnUse">
+    <rect width="20" height="62" fill="#5f8f6b"/>
+    <rect y="28" width="20" height="6" fill="#d6a53a"/>
+  </pattern>
+</defs><rect x="88" y="352" width="320" height="62" fill="url(#b0shima)"/>
+  <defs>
+  <pattern id="b1shima" width="20" height="62" x="88" y="282" patternUnits="userSpaceOnUse">
+    <rect width="20" height="62" fill="#2d4a7a"/>
+    <rect y="16" width="20" height="5" fill="#efe8da"/>
+    <rect y="41" width="20" height="5" fill="#efe8da"/>
+  </pattern>
+  <pattern id="b1koushi" width="31" height="31" x="88" y="282" patternUnits="userSpaceOnUse">
+    <rect width="31" height="31" fill="#d6a53a"/>
+    <rect x="13" width="5" height="31" fill="#2a2622" opacity=".28"/>
+    <rect y="13" width="31" height="5" fill="#2a2622" opacity=".28"/>
+  </pattern>
+  <pattern id="b1ten" width="28" height="31" x="88" y="282" patternUnits="userSpaceOnUse">
+    <rect width="28" height="31" fill="#c8414b"/>
+    <circle cx="7" cy="15.5" r="4.5" fill="#efe8da"/>
+    <circle cx="21" cy="0" r="4.5" fill="#efe8da"/>
+    <circle cx="21" cy="31" r="4.5" fill="#efe8da"/>
+  </pattern>
+  <pattern id="b1take" width="20" height="62" x="88" y="282" patternUnits="userSpaceOnUse">
+    <rect width="20" height="62" fill="#5f8f6b"/>
+    <rect y="28" width="20" height="6" fill="#d6a53a"/>
+  </pattern>
+</defs><rect x="88" y="282" width="304" height="62" fill="url(#b1koushi)"/>
+  <defs>
+  <pattern id="b2shima" width="20" height="62" x="104" y="212" patternUnits="userSpaceOnUse">
+    <rect width="20" height="62" fill="#2d4a7a"/>
+    <rect y="16" width="20" height="5" fill="#efe8da"/>
+    <rect y="41" width="20" height="5" fill="#efe8da"/>
+  </pattern>
+  <pattern id="b2koushi" width="31" height="31" x="104" y="212" patternUnits="userSpaceOnUse">
+    <rect width="31" height="31" fill="#d6a53a"/>
+    <rect x="13" width="5" height="31" fill="#2a2622" opacity=".28"/>
+    <rect y="13" width="31" height="5" fill="#2a2622" opacity=".28"/>
+  </pattern>
+  <pattern id="b2ten" width="28" height="31" x="104" y="212" patternUnits="userSpaceOnUse">
+    <rect width="28" height="31" fill="#c8414b"/>
+    <circle cx="7" cy="15.5" r="4.5" fill="#efe8da"/>
+    <circle cx="21" cy="0" r="4.5" fill="#efe8da"/>
+    <circle cx="21" cy="31" r="4.5" fill="#efe8da"/>
+  </pattern>
+  <pattern id="b2take" width="20" height="62" x="104" y="212" patternUnits="userSpaceOnUse">
+    <rect width="20" height="62" fill="#5f8f6b"/>
+    <rect y="28" width="20" height="6" fill="#d6a53a"/>
+  </pattern>
+</defs><rect x="104" y="212" width="288" height="62" fill="url(#b2ten)"/>
+  <defs>
+  <pattern id="b3shima" width="20" height="62" x="104" y="142" patternUnits="userSpaceOnUse">
+    <rect width="20" height="62" fill="#2d4a7a"/>
+    <rect y="16" width="20" height="5" fill="#efe8da"/>
+    <rect y="41" width="20" height="5" fill="#efe8da"/>
+  </pattern>
+  <pattern id="b3koushi" width="31" height="31" x="104" y="142" patternUnits="userSpaceOnUse">
+    <rect width="31" height="31" fill="#d6a53a"/>
+    <rect x="13" width="5" height="31" fill="#2a2622" opacity=".28"/>
+    <rect y="13" width="31" height="5" fill="#2a2622" opacity=".28"/>
+  </pattern>
+  <pattern id="b3ten" width="28" height="31" x="104" y="142" patternUnits="userSpaceOnUse">
+    <rect width="28" height="31" fill="#c8414b"/>
+    <circle cx="7" cy="15.5" r="4.5" fill="#efe8da"/>
+    <circle cx="21" cy="0" r="4.5" fill="#efe8da"/>
+    <circle cx="21" cy="31" r="4.5" fill="#efe8da"/>
+  </pattern>
+  <pattern id="b3take" width="20" height="62" x="104" y="142" patternUnits="userSpaceOnUse">
+    <rect width="20" height="62" fill="#5f8f6b"/>
+    <rect y="28" width="20" height="6" fill="#d6a53a"/>
+  </pattern>
+</defs><rect x="104" y="142" width="266" height="62" fill="url(#b3take)"/>
+  <g transform="translate(410 138) rotate(24)"><defs>
+  <pattern id="b4shima" width="20" height="62" x="-21" y="-31" patternUnits="userSpaceOnUse">
+    <rect width="20" height="62" fill="#2d4a7a"/>
+    <rect y="16" width="20" height="5" fill="#efe8da"/>
+    <rect y="41" width="20" height="5" fill="#efe8da"/>
+  </pattern>
+  <pattern id="b4koushi" width="31" height="31" x="-21" y="-31" patternUnits="userSpaceOnUse">
+    <rect width="31" height="31" fill="#d6a53a"/>
+    <rect x="13" width="5" height="31" fill="#2a2622" opacity=".28"/>
+    <rect y="13" width="31" height="5" fill="#2a2622" opacity=".28"/>
+  </pattern>
+  <pattern id="b4ten" width="28" height="31" x="-21" y="-31" patternUnits="userSpaceOnUse">
+    <rect width="28" height="31" fill="#c8414b"/>
+    <circle cx="7" cy="15.5" r="4.5" fill="#efe8da"/>
+    <circle cx="21" cy="0" r="4.5" fill="#efe8da"/>
+    <circle cx="21" cy="31" r="4.5" fill="#efe8da"/>
+  </pattern>
+  <pattern id="b4take" width="20" height="62" x="-21" y="-31" patternUnits="userSpaceOnUse">
+    <rect width="20" height="62" fill="#5f8f6b"/>
+    <rect y="28" width="20" height="6" fill="#d6a53a"/>
+  </pattern>
+</defs><rect x="-21" y="-31" width="42" height="62" fill="url(#b4take)"/></g></g></svg>
