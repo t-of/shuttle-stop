@@ -1,10 +1,12 @@
-# ピタオリ — 行き来する布を止めて織る
+# SHUTTLE STOP — 行き来する布を止めて織る
 
 左右に行き来する布の帯をタップで止めて、下の段に重ねて織り上げる。はみ出たぶんは切り落とされるので、ぴったり止めて細くしないのがこつ。
 
+旧名 ピタオリ（id: pitaori）。
+
 ## 🔗 リンク
 
-- 遊ぶ: https://t-of.github.io/pitaori/
+- 遊ぶ: https://t-of.github.io/shuttle-stop/
 - 制作: [T.OF...](https://t-of.github.io/)
 
 ## 遊び方
@@ -39,4 +41,4 @@ node test.mjs                 # 帯の動き・切り落とし・ぴったり・
 | `test.mjs` | `logic.js` のテスト |
 
 - 段の高さ・土台の幅・速さの式・ぴったりの幅などは `logic.js` の先頭にまとめてある。
-- 記録は端末内の `localStorage` の `pitaori.best`（`{ v: 1, rows, perfect }`）。
+- 記録は端末内の `localStorage` の `shuttle-stop.best`（`{ v: 1, rows, perfect }`）。旧名「ピタオリ」時代の `pitaori.best` があれば引き継ぐ。

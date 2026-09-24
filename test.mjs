@@ -164,18 +164,18 @@ test('ひと通り遊ぶ: 毎回ずれて置くと細くなり、いつか終わ
   assert.ok(L.woven(g) >= 1);
 });
 
-test('記録: pitaori.best に { v: 1, rows, perfect }、上回ったときだけ書く、壊れていたら 0 から', () => {
+test('記録: shuttle-stop.best に { v: 1, rows, perfect }、上回ったときだけ書く、壊れていたら 0 から', () => {
   const mem = () => { const m = new Map(); return { getItem: (k) => m.get(k) ?? null, setItem: (k, v) => m.set(k, String(v)), m }; };
   const s = mem();
   assert.deepEqual(L.readBest(s), { rows: 0, perfect: 0 });
   assert.equal(L.writeBest(s, L.readBest(s), 23, 5), true);
-  assert.deepEqual(JSON.parse(s.m.get('pitaori.best')), { v: 1, rows: 23, perfect: 5 });
+  assert.deepEqual(JSON.parse(s.m.get('shuttle-stop.best')), { v: 1, rows: 23, perfect: 5 });
   assert.deepEqual(L.readBest(s), { rows: 23, perfect: 5 });
   assert.equal(L.writeBest(s, L.readBest(s), 23, 9), false, '同じ段数では書かない');
   assert.equal(L.writeBest(s, L.readBest(s), 10, 9), false);
   assert.deepEqual(L.readBest(s), { rows: 23, perfect: 5 });
   for (const bad of ['{', 'null', '"x"', '{"v":2,"rows":5}', '{"v":1,"rows":-1}', '{"v":1}']) {
-    s.m.set('pitaori.best', bad);
+    s.m.set('shuttle-stop.best', bad);
     assert.deepEqual(L.readBest(s), { rows: 0, perfect: 0 }, bad);
   }
   const broken = { getItem() { throw new Error('private'); }, setItem() { throw new Error('quota'); } };
@@ -184,8 +184,18 @@ test('記録: pitaori.best に { v: 1, rows, perfect }、上回ったときだ�
   assert.deepEqual(L.readBest(null), { rows: 0, perfect: 0 });
 });
 
+test('記録: 旧名「ピタオリ」の pitaori.best から引き継ぐ（古いキーは消さない）', () => {
+  const mem = () => { const m = new Map(); return { getItem: (k) => m.get(k) ?? null, setItem: (k, v) => m.set(k, String(v)), m }; };
+  const s = mem();
+  s.m.set('pitaori.best', JSON.stringify({ v: 1, rows: 15, perfect: 2 }));
+  assert.deepEqual(L.readBest(s), { rows: 15, perfect: 2 });
+  assert.ok(s.m.has('pitaori.best'), '古いキーは消さない');
+  s.m.set('pitaori.best', JSON.stringify({ v: 1, rows: 99, perfect: 9 }));
+  assert.deepEqual(L.readBest(s), { rows: 15, perfect: 2 }, '新しいキーがあれば古いキーは見ない');
+});
+
 test('共有の文', () => {
-  assert.equal(L.shareText(12, 3), 'ピタオリで 12 段織った（ぴったり 3 回）');
+  assert.equal(L.shareText(12, 3), 'SHUTTLE STOP で 12 段織った（ぴったり 3 回）');
 });
 
 console.log(`\n${n} 件すべて通った`);

@@ -7,10 +7,12 @@
 // 古いキャッシュを消すときは、必ず自分の PREFIX で始まるものだけを消す。
 // keys.filter(k => k !== CACHE) のように書くと、ほかのアプリのキャッシュまで消してしまう。
 
-const PREFIX = 'pitaori-';
+const PREFIX = 'shuttle-stop-';
 const VERSION = 'v1';
 const CACHE = `${PREFIX}${VERSION}`;
 const FONT_CACHE = `${PREFIX}fonts`;
+// 旧名「ピタオリ」のキャッシュ（pitaori- で始まる）も消す
+const OLD_PREFIX = 'pitaori-';
 
 const SHELL = [
   './',
@@ -35,7 +37,7 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
   e.waitUntil(caches.keys()
     .then((keys) => Promise.all(keys
-      .filter((k) => k.startsWith(PREFIX) && k !== CACHE && k !== FONT_CACHE)
+      .filter((k) => (k.startsWith(PREFIX) && k !== CACHE && k !== FONT_CACHE) || k.startsWith(OLD_PREFIX))
       .map((k) => caches.delete(k))))
     .then(() => self.clients.claim()));
 });

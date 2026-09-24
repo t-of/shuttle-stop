@@ -1,4 +1,4 @@
-// ピタオリの決まりごと。画面（DOM）に触らない部分をここに集める。
+// SHUTTLE STOP の決まりごと。画面（DOM）に触らない部分をここに集める。
 // main.js（ブラウザ）と test.mjs（node）の両方から読む。
 
 // ---- 調整つまみ（長さは世界の単位。世界の幅は 360 に固定し、画面に合わせて拡大・縮小して描く） ----
@@ -130,14 +130,26 @@ export function follow(cam, target, dt, instant = false) {
   return instant ? target : cam + (target - cam) * (1 - Math.exp(-CAM_RATE * dt));
 }
 
-export const shareText = (rows, perfect) => `ピタオリで ${rows} 段織った（ぴったり ${perfect} 回）`;
+export const shareText = (rows, perfect) => `SHUTTLE STOP で ${rows} 段織った（ぴったり ${perfect} 回）`;
 
-// ---- 記録（localStorage はほかのアプリと共有されるので、キーは 'pitaori.' で始める） ----
-export const BEST_KEY = 'pitaori.best';
+// ---- 記録（localStorage はほかのアプリと共有されるので、キーは 'shuttle-stop.' で始める） ----
+export const BEST_KEY = 'shuttle-stop.best';
+// 旧名「ピタオリ」からの引き継ぎ。新しいキーがまだなく、古いキーがあれば読んで書き写す（古いキーは消さない）
+const OLD_BEST_KEY = 'pitaori.best';
+
+export function migrateKey(storage, oldKey, newKey) {
+  try {
+    if (storage.getItem(newKey) == null) {
+      const old = storage.getItem(oldKey);
+      if (old != null) storage.setItem(newKey, old);
+    }
+  } catch { /* 読み書きできなくても遊べる */ }
+}
 
 // storage が null でも、読めなくても、壊れていても 0 から
 export function readBest(storage) {
   try {
+    migrateKey(storage, OLD_BEST_KEY, BEST_KEY);
     const v = JSON.parse(storage.getItem(BEST_KEY));
     if (v && v.v === 1 && Number.isFinite(v.rows) && v.rows >= 0) {
       return { rows: Math.floor(v.rows), perfect: Number.isFinite(v.perfect) ? Math.floor(v.perfect) : 0 };

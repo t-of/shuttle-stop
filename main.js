@@ -1,10 +1,10 @@
-// ピタオリ本体。決まりごと（数値・動き・判定・記録）は logic.js、ここは画面・操作・描画。
+// SHUTTLE STOP 本体。決まりごと（数値・動き・判定・記録）は logic.js、ここは画面・操作・描画。
 import {
   WORLD_W, ROW_H, OVER_DELAY, RESULT_LOCK, rowTop, newGame, woven, step, stop,
-  cameraTarget, follow, shareText, readBest, writeBest,
+  cameraTarget, follow, shareText, readBest, writeBest, migrateKey,
 } from './logic.js';
 
-WebAppKit.init({ title: 'ピタオリ', text: '左右に行き来する布の帯をタップで止めて、下の段に重ねて織り上げる。はみ出たぶんは切り落とされるので、ぴったり止めて細くしないのがこつ。' });
+WebAppKit.init({ title: 'SHUTTLE STOP', text: '左右に行き来する布の帯をタップで止めて、下の段に重ねて織り上げる。はみ出たぶんは切り落とされるので、ぴったり止めて細くしないのがこつ。' });
 
 // https と localhost（開発・audit）で登録する。それ以外の http では serviceWorker がない
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
@@ -21,7 +21,9 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 function setAudioSession(soundOn) {
   try { if (navigator.audioSession) navigator.audioSession.type = soundOn ? 'playback' : 'auto'; } catch { /* 対応していない */ }
 }
-const SOUND_KEY = 'pitaori.sound';
+const SOUND_KEY = 'shuttle-stop.sound';
+// 旧名「ピタオリ」からの引き継ぎ
+migrateKey(storage, 'pitaori.sound', SOUND_KEY);
 const sfx = {
   on: (() => { try { return storage?.getItem(SOUND_KEY) !== '0'; } catch { return true; } })(),
   ctx: null,
