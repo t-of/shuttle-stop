@@ -1,8 +1,17 @@
 :root {
-  --bg: #efe8da;
-  --fg: #eceef3;
-  --muted: #9aa0ab;
-  --accent: #ffd35c;
+  --bg: #efe8da;        /* 生成り */
+  --fg: #2a2622;
+  --muted: #6b6358;
+  --warp: #d9d0bf;      /* たて糸 */
+  --accent: #2d4a7a;    /* 藍 */
+  --accent-fg: #f7f2e8;
+  --line: rgba(42, 38, 34, 0.18);
+  --wak-bg: #efe8da;
+  --wak-fg: #2a2622;
+  --wak-muted: #6b6358;
+  --wak-line: rgba(42, 38, 34, 0.18);
+  --wak-accent: #2d4a7a;
+  --wak-accent-fg: #f7f2e8;
 }
 
 * { box-sizing: border-box; }
@@ -15,41 +24,201 @@ body {
   color: var(--fg);
   font-family: system-ui, -apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
   -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
-button { font: inherit; color: inherit; }
+p, h1, h2, ol { margin: 0; }
+button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulation; }
 [hidden] { display: none !important; }
 
-/* 画面の端に置くものはセーフエリアの分だけ内側に。高さは 100vh ではなく 100dvh */
-.app {
+.pill {
+  min-height: 44px;
+  border: 1px solid var(--line);
+  background: rgba(42, 38, 34, 0.04);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 14px;
+}
+.pill:active { background: rgba(42, 38, 34, 0.1); }
+.big {
+  min-height: 58px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.big:active { background: #233b62; }
+
+/* ---- タイトル（画面の端はセーフエリアの分だけ内側に。高さは 100dvh） ---- */
+.title {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
   padding:
-    max(12px, env(safe-area-inset-top))
-    max(12px, env(safe-area-inset-right))
+    max(20px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right))
     max(12px, env(safe-area-inset-bottom))
-    max(12px, env(safe-area-inset-left));
+    max(20px, env(safe-area-inset-left));
 }
-.bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.bar__title { margin: 0; font-size: 18px; }
-.bar__actions { display: flex; gap: 8px; }
-.pill {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 999px;
-  padding: 6px 14px;
-  font-size: 13px;
-  cursor: pointer;
+.title__name {
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+  font-size: 46px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin-right: -0.14em;   /* 字間の分だけ右にずれないように */
 }
-.stage {
-  flex: 1;
+.title__tag { color: var(--muted); font-size: 15px; margin-top: -8px; }
+.title__sample { width: 240px; height: 150px; display: block; }
+.howto {
+  padding: 0;
+  list-style: none;
+  counter-reset: n;
   display: grid;
-  place-items: center;
-  touch-action: manipulation;   /* ダブルタップ拡大を止める */
-  user-select: none;
-  -webkit-user-select: none;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  max-width: 330px;
 }
-.credit { text-align: center; font-size: 12px; color: var(--muted); }
-.credit a { color: inherit; }
+.howto li { counter-increment: n; display: flex; gap: 10px; }
+.howto li::before {
+  content: counter(n);
+  flex: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(45, 74, 122, 0.12);
+  color: var(--accent);
+  font-size: 12px; font-weight: 700;
+  display: grid; place-items: center;
+  margin-top: 1px;
+}
+.title__best { color: var(--muted); font-size: 14px; }
+.title__best span { color: var(--fg); font-weight: 700; }
+.title .big { width: min(280px, 100%); margin-top: 2px; }
+.title__sub { display: flex; gap: 10px; }
+.credit { font-size: 12px; color: var(--muted); }
+.credit a { color: inherit; display: inline-block; min-width: 44px; min-height: 44px; line-height: 44px; padding: 0 6px; }
 
-/* 全画面のオーバーレイは opacity ではなく display: none で隠す */
+/* ---- 遊ぶ（どこをタップしても止まる。スクロールや拡大をさせない） ---- */
+.play {
+  position: relative;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  touch-action: none;
+}
+.hud {
+  text-align: center;
+  padding:
+    max(10px, env(safe-area-inset-top))
+    max(16px, env(safe-area-inset-right))
+    4px
+    max(16px, env(safe-area-inset-left));
+}
+.hud__rows { font-size: 16px; color: var(--muted); }
+.hud__rows b { font-size: 44px; line-height: 1.05; color: var(--fg); font-variant-numeric: tabular-nums; }
+.hud__perfect { font-size: 13px; color: var(--muted); }
+.hud__perfect b { color: var(--fg); font-variant-numeric: tabular-nums; }
+
+/* 世界の幅は 360 に固定。canvas の大きさは main.js が決める（最大 480px、左右は背景色） */
+.stage {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+.stage canvas { display: block; }
+
+/* ---- 結果（ステージの上に下寄せで重ね、後ろの布が見える） ---- */
+.result {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: max(8px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+.result__card {
+  width: min(360px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  padding: 20px 20px 16px;
+  border: 1px solid var(--warp);
+  border-radius: 20px;
+  background: rgba(239, 232, 218, 0.96);
+  text-align: center;
+  display: grid;
+  gap: 8px;
+  animation: rise 0.3s ease-out;
+}
+.result__title { font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif; font-size: 24px; letter-spacing: 0.12em; }
+.result__score { display: flex; justify-content: center; align-items: baseline; gap: 18px; color: var(--muted); font-size: 16px; }
+.result__score b { color: var(--fg); font-variant-numeric: tabular-nums; }
+.result__score span:first-child b { font-size: 52px; line-height: 1.1; }
+.result__score span:last-child b { font-size: 22px; }
+.result__new { color: #c8414b; font-weight: 700; }
+.result__best { color: var(--muted); font-size: 13px; }
+.result__card .big { margin-top: 4px; }
+.result__row { display: flex; gap: 10px; justify-content: center; }
+@keyframes rise { from { transform: translateY(16px); opacity: 0; } }
+
+/* ---- 低い画面（360×640 など）: タイトルと結果をつめる ---- */
+@media (max-height: 720px) {
+  .title { gap: 9px; }
+  .title__name { font-size: 36px; }
+  .title__sample { width: 192px; height: 120px; }
+  .howto { font-size: 13px; gap: 4px; }
+  .title .big, .result__card .big { min-height: 50px; font-size: 18px; }
+  .hud__rows b { font-size: 36px; }
+  .result__card { padding: 14px 16px 12px; gap: 5px; }
+  .result__title { font-size: 20px; }
+  .result__score span:first-child b { font-size: 40px; }
+}
+
+/* ---- 横画面のスマホ: タイトルは 2 列、段数は左に寄せてステージを縦いっぱいに、結果は右に置く ---- */
+@media (orientation: landscape) and (max-height: 560px) {
+  .title {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    column-gap: 36px;
+    row-gap: 4px;
+  }
+  .title > * { grid-column: 2; }
+  .title .title__sample { grid-column: 1; grid-row: 1 / span 8; align-self: center; width: 240px; height: 150px; }
+  .title__name { font-size: 30px; }
+  .title__tag { margin-top: 0; }
+  .howto { gap: 2px; }
+  .hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: left;
+    pointer-events: none;
+  }
+  .hud__rows b { font-size: 36px; }
+  .result {
+    align-items: center;
+    justify-content: flex-end;
+    padding: max(8px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) 16px;
+  }
+  .result__card { width: 290px; padding: 12px 16px 10px; gap: 4px; }
+  .result__title { font-size: 18px; }
+  .result__score span:first-child b { font-size: 36px; }
+  .result__card .big { min-height: 48px; font-size: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result__card { animation: none; }
+}

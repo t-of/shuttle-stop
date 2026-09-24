@@ -31,25 +31,49 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <main class="app">
-    <header class="bar">
-      <h1 class="bar__title">ピタオリ</h1>
-      <div class="bar__actions">
-        <button class="pill" data-wak="install" hidden>アプリにする</button>
-        <button class="pill" data-wak="share">共有</button>
-      </div>
+  <section class="title" id="title">
+    <h1 class="title__name">ピタオリ</h1>
+    <p class="title__tag">行き来する布を止めて織る</p>
+    <canvas class="title__sample" id="sample" aria-hidden="true"></canvas>
+    <ol class="howto">
+      <li>行き来する布を、タップで止める</li>
+      <li>はみ出たぶんは切り落とされる</li>
+      <li>ぴったりは幅そのまま。重ならなければ終わり</li>
+    </ol>
+    <p class="title__best">ベスト <span id="titleBest">0 段</span></p>
+    <button class="big" id="start">はじめる</button>
+    <div class="title__sub">
+      <button class="pill" data-wak="install" hidden>アプリにする</button>
+      <button class="pill" data-wak="share">共有</button>
+    </div>
+    <p class="credit"><a href="/">T.OF...</a> のアプリ</p>
+  </section>
+
+  <section class="play" id="play" hidden>
+    <header class="hud">
+      <p class="hud__rows"><b id="rows">0</b> 段</p>
+      <p class="hud__perfect">ぴったり <b id="perfect">0</b></p>
     </header>
+    <div class="stage" id="stageWrap">
+      <canvas id="stage"></canvas>
+    </div>
 
-    <section class="stage" id="stage">
-      <!-- ここにゲーム本体 -->
-    </section>
-
-    <footer class="credit">
-      <a href="/">T.OF...</a> のアプリ
-    </footer>
-  </main>
+    <div class="result" id="result" hidden>
+      <div class="result__card">
+        <h2 class="result__title">織りあがり</h2>
+        <p class="result__score"><span><b id="rRows">0</b> 段</span><span>ぴったり <b id="rPerfect">0</b> 回</span></p>
+        <p class="result__new" id="rNew" hidden>ベスト更新</p>
+        <p class="result__best" id="rBest"></p>
+        <button class="big" id="again">もう一度</button>
+        <div class="result__row">
+          <button class="pill" id="shareResult">共有</button>
+          <button class="pill" id="toTitle">タイトルへ</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <script src="./webapp-kit/webapp-kit.js"></script>
-  <script src="./main.js"></script>
+  <script type="module" src="./main.js"></script>
 </body>
 </html>
